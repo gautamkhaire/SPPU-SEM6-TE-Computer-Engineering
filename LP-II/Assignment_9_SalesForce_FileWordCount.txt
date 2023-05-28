@@ -1,0 +1,72 @@
+Apex Program for File Word Count Application :-
+public with sharing class FileWordCount {
+    public String fileContents {get;set;}
+    public Blob fileBody {get;set;}
+    public String fileName {get;set;}
+    public String searchWord {get;set;}
+    public Integer wordCount {get;set;}
+    public String resultMessage {get;set;}
+    
+    public void uploadFile()
+    {
+        // Insert the file into the Document Object
+        Document doc=new Document();
+        doc.Name=fileName;
+        doc.Body=fileBody;
+        doc.FolderId=UserInfo.getUserId();
+        insert doc;
+        
+        // Read the contents of the file
+        fileContents = fileBody.toString();
+    }
+    
+    public void countOccurrences(){
+        // Check if the search word is empty
+        if(String.isEmpty(searchWord)){
+            resultMessage='Please enter a word to search for.';
+            return ;
+        }
+        
+        // Count th occurrences of the search word in the file contents 
+        wordCount=0;
+        Integer lastIndex=0;
+        while(lastIndex!=-1)
+        {
+            lastIndex=fileContents.indexOf(searchWord,lastIndex);
+            if(lastIndex!=-1)
+            {
+                wordCount++;
+                lastIndex+=searchWord.length();
+            }
+        }
+        
+        // Display the result Message
+        if(wordCount==0){
+            resultMessage='The word "'+searchWord+'"" was not found in the file.';
+        }
+        else if(wordCount==1)
+        {
+            resultMessage = 'The word "' + searchWord + '" appears once in the file.';
+        } else {
+            resultMessage = 'The word "' + searchWord + '" appears ' + wordCount + ' times in the file.';
+        }
+    }
+}
+
+VirtualForce Page for File Word Count Application :-
+
+<apex:page controller="FileWordCount">
+    <apex:form >
+        <apex:inputFile value="{!fileBody}" filename="{!fileName}" />
+        <apex:commandButton value="Upload File" action="{!uploadFile}" />
+        <br/>
+        <apex:outputText value="{!fileContents}" />
+        <br/>
+        <apex:outputLabel value="Enter a word to search for:" />
+        <apex:inputText value="{!searchWord}" />
+        <br/>
+        <apex:commandButton value="Count Occurrences" action="{!countOccurrences}" />
+        <br/>
+        <apex:outputText value="{!resultMessage}" />
+    </apex:form>   
+</apex:page>
