@@ -1,0 +1,53 @@
+Apex Program for Scientific Calculator:-
+
+public class Calculator {
+    public Double firstno{get;set;}
+    public Double secondno{get;set;}
+    public Double result{get;set;}
+    
+    public void Addition(){
+        result=firstno+secondno;
+    }
+    public void Subtraction(){
+        result=firstno-secondno;
+    }
+    public void Multiplication(){
+        result=firstno*secondno;
+    }
+    public void Division(){
+        result=firstno/secondno;
+    }
+    public void Square(){
+        result=firstno*firstno;
+    }
+    public void SquareRoot(){
+        result=math.sqrt(firstno);
+    }
+    public void Absolute(){
+        result=math.abs(firstno);
+    }
+}
+
+VirtualForce Page for Scientific Calculator:-
+<apex:page controller="Calculator">
+    <apex:sectionHeader title="Calculator" subtitle="Basic Calculator"/>
+    <apex:form >
+    	<apex:pageBlock title="Simple Calculator">
+        	  <apex:pageBlockButtons location="bottom">
+            	  <apex:commandButton value="Addition" action="{!Addition}" reRender="res"/>
+            	  <apex:commandButton value="Subtraction" action="{!Subtraction}" reRender="res"/>
+                <apex:commandButton value="Multiplication" action="{!Multiplication}" reRender="res"/>
+                <apex:commandButton value="Division" action="{!Division}" reRender="res"/>
+                <apex:commandButton value="Square" action="{!Square}" reRender="res"/>
+                <apex:commandButton value="SquareRoot" action="{!SquareRoot}" reRender="res"/>
+                <apex:commandButton value="Absolute" action="{!Absolute}" reRender="res"/>
+            </apex:pageBlockButtons>
+            
+            <apex:pageBlockSection title="Calculator">
+             	  <apex:inputText label="Enter first no: " html-placeholder="First Number" value="{!firstno}"/>
+             	  <apex:inputText label="Enter second no: " html-placeholder="Second Number" value="{!secondno}"/>
+                <apex:outputText label="Result" value="{!result}" id="res" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>
